@@ -7,4 +7,4 @@ cd gut-instinct
 pip install -r requirements.txt
 python setup.py
 ```
-Modularize scripts to come, notebooks for now
+Modularized scripts to come, notebooks for now
