@@ -1,6 +1,0 @@
-README.md
-setup.py
-src/gutinstinct.egg-info/PKG-INFO
-src/gutinstinct.egg-info/SOURCES.txt
-src/gutinstinct.egg-info/dependency_links.txt
-src/gutinstinct.egg-info/top_level.txt
