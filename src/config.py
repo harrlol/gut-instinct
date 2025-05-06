@@ -10,6 +10,6 @@ def detect_env():
 ENV = detect_env()
 
 if ENV == "colab":
-    DATA_PATH = "/content/drive/MyDrive/209B/preprocessed_data/"
+    DATA_PATH = "/content/drive/MyDrive/209B/"
 else:
-    DATA_PATH = "~/hl/ac109_project/raw"        # currently this is not as processed as the colab folder above, come back and fix
+    DATA_PATH = "~/hl/ac109_project/raw"
