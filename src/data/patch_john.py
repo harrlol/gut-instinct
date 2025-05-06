@@ -21,7 +21,6 @@ def calculate_avg_gene_expression(sdata, patch, patch_coords, cell_coords, gene_
 
     return avg_expression
 
-
 def generate_and_save_patches(image, sdata, cell_coords, gene_expression_df,
                               window_size=224, stride=16, output_file="patches_and_expressions.h5",
                               cell_threshold=5, center_size=16):
