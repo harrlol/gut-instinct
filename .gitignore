@@ -1,2 +1,19 @@
-# Python virtual environments
+# Python cache and artifacts
+__pycache__/
+*.py[cod]
+*.so
+
+# Distribution and packaging
+*.egg-info/
+dist/
+build/
+
+# Jupyter Notebook cache
+.ipynb_checkpoints/
+
+# Virtual environments
 .venv/
+env/
+
+# VSCode (if you use it)
+.vscode/
