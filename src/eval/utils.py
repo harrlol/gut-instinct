@@ -1,0 +1,35 @@
+import numpy as np
+from sklearn.metrics import r2_score
+import scipy.stats as stats
+import torch
+
+
+# calculate r2 and pearson given y pred and y true
+def compute_r2_pearson(y_true, y_pred):
+
+    y_true = np.vstack(y_true)
+    y_pred = np.vstack(y_pred)
+
+    # r2 is easy we average across samples
+    r2 = r2_score(y_true, y_pred, multioutput='uniform_average')
+
+    # pearson we have to query each gene
+    pearson = []
+    for i in range(y_true.shape[1]):
+        corr, _ = stats.pearsonr(y_true[:, i], y_pred[:, i])
+        pearson.append(corr)
+    mean_pearson = np.nanmean(pearson)
+
+    return r2, mean_pearson
+
+def zinb_loss(x, mean, dispersion, pi, eps=1e-8):
+    t1 = torch.lgamma(dispersion + eps) + torch.lgamma(x + 1.0) - torch.lgamma(x + dispersion + eps)
+    t2 = (dispersion + eps) * torch.log(1.0 + (mean / dispersion) + eps)
+    t3 = x * (torch.log(dispersion + eps) - torch.log(mean + eps))
+    nb_case = t1 + t2 + t3
+
+    zero_case = -torch.log(pi + (1.0 - pi) * torch.exp(-nb_case) + eps)
+
+    result = torch.where(x < 1e-8, zero_case, -torch.log(1.0 - pi + eps) + nb_case)
+
+    return torch.mean(result)
