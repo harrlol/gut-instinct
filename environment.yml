@@ -16,5 +16,4 @@ dependencies:
 - pip
 - pip:
   - spatialdata
-  - conch-open-clip-custom @ git+https://github.com/labsyspharm/conch.git@main#subdirectory=open_clip_custom
 name: gutinstinct
