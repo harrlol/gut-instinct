@@ -1,6 +1,7 @@
 import torch
 import numpy as np
 from skimage.measure import regionprops
+from PIL import Image
 from torch.utils.data import Dataset
 
 class PatchCells(Dataset):
@@ -10,11 +11,12 @@ class PatchCells(Dataset):
     a dictionary that maps cell ids to their centroid coordinates,
     and a patch size.
     """
-    def __init__(self, image, cell_ids, cell_coords, patch_size=32):
+    def __init__(self, image, cell_ids, cell_coords, patch_size=32, transform=None):
         self.image = image
         self.cell_ids = cell_ids
         self.cell_coords = cell_coords
         self.patch_size = patch_size
+        self.transform = transform
 
     # do a filtering of the cell ids
         self.valid_cell_ids = [id for id in cell_ids if id in cell_coords]
@@ -42,18 +44,19 @@ class PatchCells(Dataset):
         patch_from_in = self.image[y_start:y_end, x_start:x_end]
         patch[:patch_from_in.shape[0], :patch_from_in.shape[1], :] = patch_from_in
 
-        # normalize
-        patch = patch / 255.0
+        patch = (patch * 255).astype(np.uint8)  
+        patch = Image.fromarray(patch)   
 
-        # pytorch tensor
-        patch = np.transpose(patch, (2, 0, 1))
+
+        if self.transform:
+            patch = self.transform(patch)
 
         return {
             'cell_id': torch.tensor(cell_id, dtype=torch.int64),
-            'patch': torch.tensor(patch, dtype=torch.float32)
+            'patch': patch.float()
         }
 
-def get_patches(sdata, random_seed=209):
+def get_patches(sdata, random_seed=209, transform=None, patch_size=32):
     # pull training cells ids into a list
     split_cell_id = sdata["cell_id-group"].obs.query("group == 'train'")["cell_id"].values
 
@@ -83,8 +86,8 @@ def get_patches(sdata, random_seed=209):
     test_ids = shuffled[train_len + val_len:]
 
     # create dataset objects
-    dataset_patch_train = PatchCells(he_image, train_ids, cell_coords, patch_size=32)
-    dataset_patch_val = PatchCells(he_image, val_ids, cell_coords, patch_size=32)
-    dataset_patch_test = PatchCells(he_image, test_ids, cell_coords, patch_size=32)
+    dataset_patch_train = PatchCells(he_image, train_ids, cell_coords, patch_size=patch_size, transform=transform)
+    dataset_patch_val = PatchCells(he_image, val_ids, cell_coords, patch_size=patch_size, transform=transform)
+    dataset_patch_test = PatchCells(he_image, test_ids, cell_coords, patch_size=patch_size, transform=transform)
 
     return dataset_patch_train, dataset_patch_val, dataset_patch_test
