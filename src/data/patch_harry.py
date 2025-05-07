@@ -49,7 +49,7 @@ class PatchCells(Dataset):
         patch = np.transpose(patch, (2, 0, 1))
 
         return {
-            'cell_id': cell_id,
+            'cell_id': torch.tensor(cell_id, dtype=torch.int64),
             'patch': torch.tensor(patch, dtype=torch.float32)
         }
 
