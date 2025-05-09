@@ -3,7 +3,15 @@ from sklearn.metrics import r2_score
 import scipy.stats as stats
 import torch
 
+def compute_r2(y_trues, y_preds):
+    return np.mean([r2_score(y_trues[i], y_preds[i]) for i in range(y_trues.shape[0])])
 
+def compute_pearsonr(y_trues, y_preds):
+    return np.mean([stats.pearsonr(y_trues[i, :], y_preds[i, :])[0] for i in range(y_trues.shape[0])])
+
+
+
+### OLD CODE ###
 # calculate r2 and spearman given y pred and y true
 def compute_r2_spearman(y_true, y_pred):
 
