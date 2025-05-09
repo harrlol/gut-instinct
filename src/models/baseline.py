@@ -19,7 +19,8 @@ class CNNPlusLinear(nn.Module):
             nn.AdaptiveAvgPool2d((1, 1)), 
             nn.Flatten(),   
             nn.Linear(64, 128), 
-            nn.ReLU()
+            nn.ReLU(),
+            nn.Dropout(0.5),
         )
         self.linear_head = nn.Linear(128, 460)
     
