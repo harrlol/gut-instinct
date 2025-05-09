@@ -17,8 +17,12 @@ env/
 
 .vscode/
 
-# data files
+# data folder
 data/*
-!data/.gitkeep
-!data/README.md
-!data/fetch_data.sh
+!data/processed/
+data/processed/*
+!data/processed/.gitkeep
+
+# logs
+*.txt
+*.png
