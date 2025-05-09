@@ -4,8 +4,8 @@ import numpy as np
 from skimage.measure import regionprops
 from PIL import Image
 from torch.utils.data import Dataset
-import datetime
 import random
+import matplotlib.pyplot as plt
 
 # given a patch range, get the cell ids
 def get_cell_ids_in_patch(sdata, patch_size=200, log_file=None):
